@@ -6,6 +6,7 @@ class Physics {
     #sprite = new Sprite(10, 10, this.#position);
     #velocityY = 0;
     #velocityX = 0;
+    #accelerationY = 0;
     #speed = 50;
     #mass = 5;
     #isColliding = false;
@@ -51,10 +52,13 @@ class Physics {
     PhysicsUpdate() {
         if(this.#static && EntityList.Entites !== null) return;
 
-        this.#position.y += this.#velocityY * (this.#mass * GlobalVariables.Gravity) * GlobalVariables.fps;
+        console.log(this.#velocityY, this.#accelerationY, Math.abs(0))
+
+        this.#position.y += this.#velocityY * GlobalVariables.deltaTime;
         this.#position.x += this.#velocityX * GlobalVariables.fps;
 
-        this.#velocityY += GlobalVariables.Gravity * GlobalVariables.fps;
+        this.#velocityY += (this.#mass * GlobalVariables.Gravity) * GlobalVariables.deltaTime;
+        this.#accelerationY = Math.abs(this.#velocityY)
 
         // this.#velocityX -= InputManager.GetAxis("x") * GlobalVariables.fps;
         // console.log(this.#velocityX)

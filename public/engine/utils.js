@@ -1,6 +1,9 @@
 class GlobalVariables {
     static floorY = 100;
-    static Gravity = 20;
+    static Gravity = 50;
+    static time = 0;
+    static lastTime = 0;
+    static deltaTime = 0;
     static fps = 1/60; // 60 frames per second
 }
 
@@ -52,9 +55,17 @@ class InputManager {
         else return false
     }
 
-    static controllerUpdate () {
+    static inputUpdate () {
         if(InputManager.#controllerIndex == null) return
         let gamepad = navigator.getGamepads()[InputManager.#controllerIndex];
+
+        if(InputManager.CheckKeyPress("right")) {
+            InputManager.AxisX = 1;
+        }else if(InputManager.CheckKeyPress("left")) {
+            InputManager.AxisX = -1;
+        }else {
+            InputManager.AxisX = 0;
+        }
         
         InputManager.AxisX = gamepad.axes[0]
     }
@@ -63,20 +74,10 @@ class InputManager {
         // movement listener
         window.addEventListener("keydown", (e) => {
             InputManager.currentKeys[e.code] = true;
-
-            if(InputManager.CheckKeyPress("right")) {
-                InputManager.AxisX = 1;
-            }
-            if(InputManager.CheckKeyPress("left")) {
-                InputManager.AxisX = -1;
-            }
         })
         
         window.addEventListener("keyup", (e) => {
             InputManager.currentKeys[e.code] = false;
-            if(!InputManager.CheckKeyPress("right") || !InputManager.CheckKeyPress("left")) {
-                InputManager.AxisX = 0;
-            }
         })
 
         window.addEventListener("gamepadconnected", (e) => {
@@ -98,3 +99,4 @@ class InputManager {
     }
 }
 
+const clamp = (val, min, max) => Math.min(Math.max(val, min), max)

@@ -11,10 +11,16 @@ var gameMap = {
 EntityList.SetEntities = gameMap
 
 
-function render() {
+function render(time) {
     ctx.clearRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT)
 
-    InputManager.controllerUpdate()
+    InputManager.inputUpdate()
+
+    GlobalVariables.deltaTime = (GlobalVariables.time - GlobalVariables.lastTime)
+    
+    GlobalVariables.lastTime = GlobalVariables.time;
+    GlobalVariables.time = time/1000;
+    
 
     for(let [key, value] of Object.entries(gameMap)) {
         gameMap[key].Draw(ctx);
@@ -24,4 +30,4 @@ function render() {
 
     requestAnimationFrame(render);
 }
-render();
+render(0);
